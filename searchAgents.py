@@ -295,6 +295,7 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
+        return (self.startingPosition, ([corner for corner in self.corners]))
         util.raiseNotDefined()
 
     def isGoalState(self, state):
@@ -302,13 +303,14 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
+        return len(state[1]) == 0
         util.raiseNotDefined()
 
     def getSuccessors(self, state):
         """
         Returns successor states, the actions they require, and a cost of 1.
 
-         As noted in search.py:
+        As noted in search.py:
             For a given state, this should return a list of triples, (successor,
             action, stepCost), where 'successor' is a successor to the current
             state, 'action' is the action required to get there, and 'stepCost'
@@ -325,6 +327,18 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
+            x,y = state[0]
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            didHitWall = self.walls[nextx][nexty]
+            newPosition = (nextx, nexty)
+            if not didHitWall:
+                otherCorners = state[1][:]
+                if newPosition in otherCorners:
+                    otherCorners.remove(newPosition)
+                successors.append(((newPosition, otherCorners), action, 1))
+
+                    
 
         self._expanded += 1 # DO NOT CHANGE
         return successors
