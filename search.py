@@ -87,16 +87,49 @@ def depthFirstSearch(problem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
+    dfsStack = util.Stack();
+    visitedSet = set();
+    dfsStack.push((problem.getStartState(), []));
+    while not dfsStack.isEmpty():
+        (node, path) = dfsStack.pop();
+        if problem.isGoalState(node):
+            return path;
+        if node not in visitedSet:
+            visitedSet.add(node);
+            for child, direction, _ in problem.getSuccessors(node):
+                dfsStack.push((child, path + [direction]));
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
+    bfsQueue = util.Queue();
+    visitedSet = set();
+    bfsQueue.push((problem.getStartState(), []));
+    while not bfsQueue.isEmpty():
+        (node, path) = bfsQueue.pop();
+        if problem.isGoalState(node):
+            return path;
+        if node not in visitedSet:
+            visitedSet.add(node);
+            for child, direction, _ in problem.getSuccessors(node):
+                bfsQueue.push((child, path + [direction]));
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
+    ucsPQ = util.PriorityQueue();
+    visitedSet = set();
+    ucsPQ.push((problem.getStartState(), []), 0);
+    while not ucsPQ.isEmpty():
+        (node, path) = ucsPQ.pop();
+        if problem.isGoalState(node):
+            return path;
+        if node not in visitedSet:
+            visitedSet.add(node);
+            for child, direction, _ in problem.getSuccessors(node):
+                ucsPQ.push((child, path + [direction]), problem.getCostOfActions(path + [direction]));
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
