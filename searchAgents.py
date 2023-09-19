@@ -330,10 +330,13 @@ class CornersProblem(search.SearchProblem):
             x,y = state[0]
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
+            # Hitting wall
             didHitWall = self.walls[nextx][nexty]
+            # Reaching a corner
             newPosition = (nextx, nexty)
             if not didHitWall:
                 otherCorners = state[1][:]
+                # Check if we reached a corner
                 if newPosition in otherCorners:
                     otherCorners.remove(newPosition)
                 successors.append(((newPosition, otherCorners), action, 1))
@@ -376,6 +379,7 @@ def cornersHeuristic(state, problem):
     "*** YOUR CODE HERE ***"
     heuristic = 0
     position = state[0]
+    # unvisitedCorners = [corner for corner in state[1]]
     unvisitedCorners = state[1][:]
     while len(unvisitedCorners) > 0:
         closestCorner = None
